@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "location":                   { "value": "northcentralus" },
+      "vmNamePrefix":               { "value": "win11test" },
+      "numberOfVms":                { "value": 2 },
+      "scriptUri":                  { "value": "https://raw.githubusercontent.com/moizarajdev/ps/refs/heads/main/script.ps1" },
+      "adminUsername":              { "value": "usmavdadmin" },
+  
+      "vnetName":                   { "value": "VNET-TestAvdNetwork" },
+      "subnetName":                 { "value": "default" },
+      "existingNsgName":            { "value": "NSG-VNET-TestAVDNetwork-default" },
+      "enableAcceleratedNetworking":{ "value": true },
+      "publicIpPerVm":              { "value": false },
+  
+      "restrictRdpViaBastion":      { "value": true },
+      "rdpAllowedCidrs":            { "value": [] },
+  
+      "osDiskType":                 { "value": "StandardSSD_LRS" },
+      "osDiskSizeGB":               { "value": 128 },
+  
+      "addUserAssignedIdentity":    { "value": false },
+      "userAssignedIdentityName":   { "value": "" },
+      "keyVaultNameForRoleAssignment": { "value": "" },
+  
+      "storageAccountName":         { "value": "rimasbinaries" }
+    }
+  }
