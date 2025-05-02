@@ -9,3 +9,16 @@ Expand-Archive   -LiteralPath $vdotZipFile -DestinationPath $env:TEMP -Force -Er
     -Optimizations All `
     -AdvancedOptimizations RemoveOneDrive, Edge `
     -Verbose
+
+$source = "\\usmrimas\Rimas_NTP\PSBinaries"
+$destination = "C:\Program Files (x86)\RIMAS"
+
+if (-Not (Test-Path -Path $source)) {
+    exit 1
+}
+
+if (-Not (Test-Path -Path $destination)) {
+    New-Item -ItemType Directory -Path $destination -Force | Out-Null
+}
+
+Copy-Item -Path "$source\*" -Destination $destination -Recurse -Force
