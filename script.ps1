@@ -10,7 +10,7 @@ Expand-Archive   -LiteralPath $vdotZipFile -DestinationPath $env:TEMP -Force -Er
     -AdvancedOptimizations RemoveOneDrive, Edge `
     -Verbose
 
-$source = "\\usmrimas\Rimas_NTP\PSBinaries"
+$source = "\\usmfs01\Office2\moiz\PSBinaries"
 $destination = "C:\RIMAS_NTP"
 
 if (-Not (Test-Path -Path $source)) {
@@ -22,3 +22,6 @@ if (-Not (Test-Path -Path $destination)) {
 }
 
 Copy-Item -Path "$source\*" -Destination $destination -Recurse -Force
+
+Copy-Item -Path "\\usmfs01\Office2\moiz\TSScan_server.exe" -Destination $env:TEMP -Force
+.$env:TEMP\TSScan_server.exe /VERYSILENT
