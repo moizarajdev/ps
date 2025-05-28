@@ -129,10 +129,10 @@ resource customScriptExt 'Microsoft.Compute/virtualMachines/extensions@2024-11-0
   properties: {
     publisher: 'Microsoft.Compute'
     type: 'CustomScriptExtension'
-    typeHandlerVersion: '2.0'
+    typeHandlerVersion: '1.10'
     autoUpgradeMinorVersion: true
     settings: { fileUris: [ scriptUri ] }
-    protectedSettings: { commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${last(split(scriptUri, '/'))} -Optimizations All -AcceptEULA' }
+    protectedSettings: { commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File ${last(split(scriptUri, '/'))}' }
   }
 }]
 
