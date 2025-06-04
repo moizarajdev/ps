@@ -11,13 +11,19 @@ Expand-Archive   -LiteralPath $zip -DestinationPath $env:TEMP -Force -ErrorActio
     -Verbose
 
 $source = "\\usmfs01\Office2\moiz\"
-$dest = "C:\RIMAS_NTP"
-New-Item -ItemType Directory -Path $dest -Force | Out-Null
-Copy-Item -Path "$source\PSBinaries\*" -Destination $dest -Recurse -Force
+$rimas = "C:\RIMAS_NTP"
+$programFiles = "C:\Program Files (x86)"
+
+New-Item -ItemType Directory -Path $rimas -Force | Out-Null
+Copy-Item -Path "$source\PSBinaries\*" -Destination $rimas -Recurse -Force
+Copy-Item -Path "$source\jpegger" -Destination $programFiles -Recurse -Force
+
 Copy-Item -Path "$source\vcredist64.exe" -Destination $env:TEMP -Force
 Copy-Item -Path "$source\vcredist86.exe" -Destination $env:TEMP -Force
 Copy-Item -Path "$source\TSScan_server.exe" -Destination $env:TEMP -Force
 
+
 Start-Process -FilePath "$env:TEMP\vcredist64.exe" -ArgumentList "/install /quiet /norestart" -Wait
 Start-Process -FilePath "$env:TEMP\vcredist86.exe" -ArgumentList "/install /quiet /norestart" -Wait
+Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All
 Start-Process -FilePath "$env:TEMP\TSScan_server.exe" -ArgumentList "/VERYSILENT" -Wait
