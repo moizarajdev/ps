@@ -10,7 +10,7 @@ Expand-Archive   -LiteralPath $zip -DestinationPath $env:TEMP -Force -ErrorActio
     -AdvancedOptimizations RemoveOneDrive, Edge `
     -Verbose
 
-$source = "\\usmfs01\Office2\moiz\"
+$source = "\\usmfs01\Office2\moiz"
 $rimas = "C:\RIMAS_NTP"
 $programFiles = "C:\Program Files (x86)"
 
@@ -18,6 +18,7 @@ New-Item -ItemType Directory -Path $rimas -Force | Out-Null
 Copy-Item -Path "$source\PSBinaries\*" -Destination $rimas -Recurse -Force
 Copy-Item -Path "$source\jpegger" -Destination $programFiles -Recurse -Force
 
+# Inject JPEGGER registry settings into default user profile
 reg.exe load HKU\DefaultUser 'C:\Users\Default\NTUSER.DAT'
 reg.exe import "$source\jpegger.reg"
 reg.exe unload HKU\DefaultUser
@@ -29,6 +30,7 @@ Copy-Item -Path "$source\TSScan_server.exe" -Destination $env:TEMP -Force
 Start-Process -FilePath "$env:TEMP\vcredist64.exe" -ArgumentList "/install /quiet /norestart" -Wait
 Start-Process -FilePath "$env:TEMP\vcredist86.exe" -ArgumentList "/install /quiet /norestart" -Wait
 Enable-WindowsOptionalFeature -Online -FeatureName NetFx3 -All
+Copy-Item -Path "$source\TSPrint.twlic" -Destination "$programFiles\TerminalWorks\TSScan Server" -Force
 Start-Process -FilePath "$env:TEMP\TSScan_server.exe" -ArgumentList "/VERYSILENT" -Wait
 
 $fontPath    = "$source\MICRE13B.ttf"
@@ -41,6 +43,13 @@ $shell          = New-Object -ComObject Shell.Application
 $fontsFolderObj = $shell.Namespace($fontsFolder)
 $fontsFolderObj.CopyHere($FontPath)
 
-$regPath   = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
+$regFontPath   = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts'
 $valueName = $fileName
-Set-ItemProperty -Path $regPath -Name $valueName -Value $fileName -Type String
+Set-ItemProperty -Path $regFontPath -Name $valueName -Value $fileName -Type String
+
+$RegFile  = "$source\jpegger.reg"
+$hive = 'C:\Users\Default\NTUSER.DAT'
+
+reg.exe load HKU\DefaultUser $hive
+reg.exe import $RegFile
+reg.exe unload HKU\DefaultUser
